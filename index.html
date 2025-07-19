@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Центр помощи бездомным животным "Собака"</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #333;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: #222;
+            padding: 20px 0;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            padding: 15px;
+            border: 4px double #f3efec;
+            border-radius: 15px;
+            background-color: #444;
+            color: #f3efec;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #555;
+            margin: 0;
+        }
+        #content {
+            flex: 1;
+            width: 100%;
+            padding: 0;
+        }
+        #menu {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .nav-menu {
+            display: flex;
+            justify-content: space-between;
+            list-style: none;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+        .nav-menu li {
+            flex: 1;
+            margin: 0 5px;
+        }
+        .nav-menu a {
+            display: block;
+            padding: 12px 0;
+            background: #4e4e4e;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 1.2em;
+            color: #fff;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        .nav-menu a:hover {
+            background: #5e5e5e;
+        }
+        .image-with-text {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-top: 30px;
+            width: 100%;
+        }
+        .image-with-text img {
+            flex: 1;
+            max-width: 600px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s;
+        }
+        .image-with-text img:hover {
+            transform: scale(1.02);
+        }
+        .image-text {
+            flex: 1;
+            line-height: 1.7;
+        }
+        .image-text h2 {
+            color: #f3efec;
+            margin-bottom: 15px;
+        }
+        .image-text p {
+            margin-bottom: 15px;
+        }
+        
+        /* Стили для футера */
+        footer {
+            background-color: #222;
+            padding: 25px 0;
+            text-align: center;
+            width: 100%;
+            border-top: 1px solid #444;
+        }
+        .contact-info {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            color: #ddd;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .contact-item {
+            margin: 10px 20px;
+            flex: 1;
+            min-width: 200px;
+        }
+        .contact-item a {
+            color: #4da8ff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .contact-item a:hover {
+            color: #6bbdff;
+            text-decoration: underline;
+        }
+        .copyright {
+            margin-top: 20px;
+            color: #aaa;
+            font-size: 0.95em;
+        }
+
+        /* Стили для уведомления */
+        .notification {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        /* Новые стили для раздела задач */
+        #todoSection {
+            display: none;
+            margin: 40px 0;
+            background: #444;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .todo-form {
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        .todo-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+        }
+        
+        .todo-form input,
+        .todo-form select,
+        .todo-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #555;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+        }
+        
+        .todo-form button {
+            background-color: #4da8ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .todo-item {
+            background: #555;
+            border-left: 5px solid #ffd166;
+            padding: 15px;
+            border-radius: 0 5px 5px 0;
+            margin-bottom: 15px;
+        }
+        
+        .todo-item h3 {
+            color: #f3efec;
+            margin-bottom: 10px;
+        }
+        
+        .todo-item p {
+            color: #ddd;
+            margin-bottom: 15px;
+        }
+        
+        .todo-item small {
+            color: #aaa;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .todo-item button {
+            background: none;
+            border: none;
+            color: #ff6b6b;
+            cursor: pointer;
+            padding: 5px 0;
+        }
+        
+        .todo-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        /* Стили для фильтра задач */
+        .todo-filter {
+            background: #555;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .todo-filter h3 {
+            color: #f3efec;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-controls select, 
+        .filter-controls input {
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+            padding: 8px 12px;
+            background-color: #444;
+            color: #fff;
+            border: 1px solid #666;
+            border-radius: 4px;
+        }
+
+        .filter-controls button {
+            background-color: #4da8ff;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .filter-controls button:hover {
+            background-color: #3d8bdd;
+        }
+
+        /* Стили для раздела отзывов */
+        .reviews-section {
+            max-width: 1000px;
+            margin: 40px auto 0;
+            background: #444;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        
+        .reviews-title {
+            text-align: center;
+            color: #f3efec;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .review-form {
+            background: #555;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .review-form h2 {
+            color: #f3efec;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ddd;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            background-color: #444;
+            color: #fff;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .rating-stars {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .rating-stars input[type="radio"] {
+            display: none;
+        }
+        
+        .rating-stars label {
+            font-size: 2em;
+            color: #666;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .rating-stars input[type="radio"]:checked ~ label {
+            color: #ffd700;
+        }
+        
+        .rating-stars label:hover,
+        .rating-stars label:hover ~ label {
+            color: #ffd700;
+        }
+        
+        .submit-btn {
+            background-color: #4da8ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            display: block;
+            margin: 0 auto;
+            transition: background 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background-color: #3d8bdd;
+        }
+        
+        .reviews-list {
+            margin-top: 40px;
+        }
+        
+        .review-card {
+            background: #555;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #4da8ff;
+        }
+        
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .review-author {
+            font-weight: bold;
+            color: #f3efec;
+            font-size: 1.2em;
+        }
+        
+        .review-date {
+            color: #aaa;
+            font-size: 0.9em;
+        }
+        
+        .review-rating {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .review-text {
+            color: #ddd;
+            line-height: 1.6;
+        }
+        
+        .no-reviews {
+            text-align: center;
+            color: #aaa;
+            padding: 40px 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div id="notification" class="notification"></div>
+
+    <header>
+        <h1>Центр помощи бездомным животным "Собака"</h1>
+    </header>
+    <hr>
+    <div id="content">
+        <div id="menu">
+            <ul class="nav-menu">
+                <li><a href="help.html">Как я могу помочь?</a></li>
+                <li><a href="priot.html">Наши приюты</a></li>
+                <li><a href="history.html">Наши истории</a></li>
+                <li><a href="otvets.html">Отзывы</a></li>
+                <li><a href="#" onclick="showTodoSection(); return false;">Задачи волонтеров</a></li>
+                
+            </ul>
+            
+            <div class="image-with-text">
+                <img src="dog.jpg" alt="Счастливая собака из приюта">
+                <div class="image-text">
+                    <h2>Мы дарим второй шанс</h2>
+                    <p>Каждый день мы спасаем бездомных животных, оказываем им медицинскую помощь и ищем для них любящие семьи.</p>
+                    <p>Наш центр существует благодаря волонтёрам и пожертвованиям людей, которым небезразлична судьба братьев наших меньших.</p>
+                    <p>Присоединяйтесь к нашей миссии — вместе мы можем изменить мир к лучшему!</p>
+                </div>
+            </div>
+            
+            <!-- Секция для списка задач -->
+            <div id="todoSection">
+                <h2 style="text-align: center; color: #f3efec; margin-bottom: 25px;">Организационные задачи</h2>
+                
+                <!-- Фильтр задач -->
+                <div class="todo-filter">
+                    <h3>Фильтр задач</h3>
+                    <div class="filter-controls">
+                        <select id="filterPriority">
+                            <option value="all">Все приоритеты</option>
+                            <option value="#ff6b6b">Высокий</option>
+                            <option value="#ffd166">Средний</option>
+                            <option value="#06d6a0">Низкий</option>
+                        </select>
+                        <input type="text" id="filterKeyword" placeholder="Поиск по названию или описанию">
+                        <button onclick="filterTasks()">Применить фильтр</button>
+                        <button onclick="resetFilter()">Сбросить</button>
+                    </div>
+                </div>
+                
+                <form name="toDoForm" class="todo-form" onsubmit="event.preventDefault(); addToDo();">
+                    <div>
+                        <label for="todoTitle">Название задачи:</label>
+                        <input type="text" id="todoTitle" name="title" required>
+                    </div>
+                    
+                    <div>
+                        <label for="todoPriority">Приоритет:</label>
+                        <select id="todoPriority" name="color">
+                            <option value="#ff6b6b">Высокий (красный)</option>
+                            <option value="#ffd166" selected>Средний (желтый)</option>
+                            <option value="#06d6a0">Низкий (зеленый)</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="todoDesc">Описание:</label>
+                        <textarea id="todoDesc" name="description" rows="3"></textarea>
+                    </div>
+                    
+                    <button type="submit">Добавить задачу</button>
+                </form>
+                
+                <div id="toDoContainer"></div>
+            </div>
+
+            <!-- Секция для отзывов -->
+            <div id="reviewsSection" class="reviews-section" style="display: none;">
+                <h1 class="reviews-title">Отзывы о нашей работе</h1>
+                
+                <div class="review-form">
+                    <h2>Оставить отзыв</h2>
+                    <form id="reviewForm">
+                        <div class="form-group">
+                            <label for="name">Ваше имя:</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Оценка:</label>
+                            <div class="rating-stars">
+                                <input type="radio" id="star5" name="rating" value="5">
+                                <label for="star5">★</label>
+                                <input type="radio" id="star4" name="rating" value="4">
+                                <label for="star4">★</label>
+                                <input type="radio" id="star3" name="rating" value="3" checked>
+                                <label for="star3">★</label>
+                                <input type="radio" id="star2" name="rating" value="2">
+                                <label for="star2">★</label>
+                                <input type="radio" id="star1" name="rating" value="1">
+                                <label for="star1">★</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="review">Ваш отзыв:</label>
+                            <textarea id="review" name="review" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn">Отправить отзыв</button>
+                    </form>
+                </div>
+                
+                <div class="reviews-list">
+                    <h2>Последние отзывы</h2>
+                    
+                    <div id="reviewsContainer">
+                        <div class="no-reviews">Пока нет отзывов. Будьте первым!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 7. Рейтинг волонтеров -->
+        <div style="background:#444; padding:30px; border-radius:10px; margin:40px 0;">
+            <h2 style="color:#f3efec; text-align:center; margin-bottom:25px; font-size:1.8em;">Рейтинг волонтёров</h2>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; color:#ddd;">
+                    <thead>
+                        <tr style="background:#555;">
+                            <th style="padding:15px; text-align:center; width:50px;">#</th>
+                            <th style="padding:15px; text-align:left;">Волонтер</th>
+                            <th style="padding:15px; text-align:center; width:100px;">Часы</th>
+                            <th style="padding:15px; width:30%;">Прогресс</th>
+                            <th style="padding:15px; text-align:center;">Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody id="volunteerRatingTable">
+                        <!-- Данные загружаются через JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 8. Викторина "Угадай кто?" -->
+        <div style="background:#444; padding:30px; border-radius:10px; margin:40px 0; text-align:center;">
+            <h2 style="color:#f3efec; margin-bottom:25px; font-size:1.8em;">Добрая викторина:</h2>
+            <img id="quizAnimalImg" style="width:250px; height:250px; object-fit:cover; border-radius:50%; border:5px solid #4da8ff; margin:0 auto 20px; box-shadow:0 4px 15px rgba(0,0,0,0.3);">
+            <p id="quizQuestion" style="color:#ddd; font-size:1.2em; margin-bottom:20px;">Кто это? Выберите правильный ответ:</p>
+            <div id="quizOptionsContainer" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:15px; margin-bottom:20px;">
+                <!-- Варианты загружаются через JS -->
+            </div>
+            <div id="animalFact" style="background:#555; padding:15px; border-radius:8px; color:#ddd; display:none; margin-bottom:20px;"></div>
+            <button id="nextQuizBtn" style="background:#4da8ff; color:white; border:none; padding:12px 30px; border-radius:30px; cursor:pointer; display:none;">Следующий вопрос</button>
+            <div style="display:flex; justify-content:center; gap:30px; margin-top:25px; color:#ddd;">
+                <div>Правильно: <span id="quizCorrect">0</span></div>
+                <div>Ошибки: <span id="quizWrong">0</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="contact-info">
+            <div class="contact-item">
+                <strong>Телефон:</strong> +7 (123) 456-78-90
+            </div>
+            <div class="contact-item">
+                <strong>Email:</strong> <a href="mailto:info@sobaka-help.ru">info@sobaka-help.ru</a>
+            </div>
+            <div class="contact-item">
+                <strong>Адрес:</strong> г. Москва, ул. Добрая, д. 15
+            </div>
+        </div>
+        <p class="copyright">© 2025 Центр помощи бездомным животным "Собака"</p>
+    </footer>
+
+    <script>
+        // Проверка успешной регистрации
+        const urlParams = new URLSearchParams(window.location.search);
+        const registrationSuccess = urlParams.get('registration');
+
+        if (registrationSuccess === 'success') {
+            showNotification('Регистрация прошла успешно! Спасибо за вашу помощь!');
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        // ToDo List функционал
+        const todoList = [];
+        const baseTodoId = 'todoitem';
+
+        function showTodoSection() {
+            document.getElementById('todoSection').style.display = 'block';
+            document.getElementById('reviewsSection').style.display = 'none';
+            
+            window.scrollTo({
+                top: document.getElementById('todoSection').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+
+        function showReviewsSection() {
+            document.getElementById('reviewsSection').style.display = 'block';
+            document.getElementById('todoSection').style.display = 'none';
+            
+            window.scrollTo({
+                top: document.getElementById('reviewsSection').offsetTop,
+                behavior: 'smooth'
+            });
+        }
+
+        function deleteElement(id) {
+            if(confirm('Вы уверены, что хотите удалить эту задачу?')) {
+                const index = todoList.findIndex(item => item.id === id);
+                todoList.splice(index, 1);
+                document.getElementById(baseTodoId + id).remove();
+                showNotification('Задача успешно удалена');
+            }
+        }
+
+        function addToDo() {
+            const form = document.forms.toDoForm;
+            const newTodo = {
+                id: todoList.length === 0 ? 1 : Math.max(...todoList.map(todo => todo.id)) + 1,
+                title: form.elements.title.value,
+                color: form.elements.color.value,
+                description: form.elements.description.value,
+                createdAt: new Date().toLocaleString()
+            };
+            
+            todoList.push(newTodo);
+            addToDoToHtml(newTodo);
+            form.reset();
+            showNotification('Задача успешно добавлена');
+        }
+
+        function addToDoToHtml(newToDo) {
+            const div = document.createElement('div');
+            div.id = baseTodoId + newToDo.id;
+            div.className = 'todo-item';
+            div.style.borderLeftColor = newToDo.color;
+            
+            div.innerHTML = `
+                <div class="todo-header">
+                    <h3>${newToDo.title}</h3>
+                    <small>${newToDo.createdAt}</small>
+                </div>
+                <p>${newToDo.description}</p>
+                <button onclick="deleteElement(${newToDo.id})">Удалить задачу</button>
+            `;
+            
+            document.getElementById('toDoContainer').prepend(div);
+        }
+
+        // Функции для фильтрации задач
+        function filterTasks() {
+            const priorityFilter = document.getElementById('filterPriority').value;
+            const keywordFilter = document.getElementById('filterKeyword').value.toLowerCase();
+            
+            const filteredTasks = todoList.filter(task => {
+                // Фильтрация по приоритету
+                const priorityMatch = priorityFilter === 'all' || task.color === priorityFilter;
+                
+                // Фильтрация по ключевому слову
+                const keywordMatch = keywordFilter === '' || 
+                    task.title.toLowerCase().includes(keywordFilter) || 
+                    task.description.toLowerCase().includes(keywordFilter);
+                
+                return priorityMatch && keywordMatch;
+            });
+            
+            // Очищаем контейнер
+            document.getElementById('toDoContainer').innerHTML = '';
+            
+            // Добавляем отфильтрованные задачи
+            filteredTasks.forEach(task => addToDoToHtml(task));
+        }
+
+        function resetFilter() {
+            document.getElementById('filterPriority').value = 'all';
+            document.getElementById('filterKeyword').value = '';
+            
+            // Очищаем контейнер
+            document.getElementById('toDoContainer').innerHTML = '';
+            
+            // Добавляем все задачи
+            todoList.forEach(task => addToDoToHtml(task));
+        }
+
+        // Функционал для отзывов
+        let reviews = [];
+
+        if (localStorage.getItem('reviews')) {
+            reviews = JSON.parse(localStorage.getItem('reviews'));
+            renderReviews();
+        }
+
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const rating = document.querySelector('input[name="rating"]:checked').value;
+            const reviewText = document.getElementById('review').value;
+            const date = new Date().toLocaleDateString('ru-RU');
+            
+            const newReview = {
+                id: Date.now(),
+                name: name,
+                rating: rating,
+                text: reviewText,
+                date: date
+            };
+            
+            reviews.unshift(newReview);
+            saveReviews();
+            renderReviews();
+            
+            this.reset();
+            document.querySelector('input[name="rating"][value="3"]').checked = true;
+            
+            showNotification('Спасибо за ваш отзыв! Он успешно добавлен.');
+        });
+
+        function saveReviews() {
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+        }
+
+        function renderReviews() {
+            const container = document.getElementById('reviewsContainer');
+            
+            if (reviews.length === 0) {
+                container.innerHTML = '<div class="no-reviews">Пока нет отзывов. Будьте первым!</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            reviews.forEach(review => {
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'review-card';
+                
+                let stars = '';
+                for (let i = 0; i < 5; i++) {
+                    stars += i < review.rating ? '★' : '☆';
+                }
+                
+                reviewElement.innerHTML = `
+                    <div class="review-header">
+                        <div class="review-author">${review.name}</div>
+                        <div class="review-date">${review.date}</div>
+                    </div>
+                    <div class="review-rating">${stars}</div>
+                    <div class="review-text">${review.text}</div>
+                `;
+                
+                container.appendChild(reviewElement);
+            });
+        }
+
+        // 7. Рейтинг волонтеров
+        const volunteerData = [
+            {id:1, name:"Анна Петрова", avatar:"vol1.jpg", hours:245, target:300, status:"Золотой волонтер"},
+            {id:2, name:"Иван Сидоров", avatar:"vol2.jpg", hours:187, target:200, status:"Серебряный волонтер"},
+            {id:3, name:"Мария Иванова", avatar:"vol3.jpg", hours:132, target:150, status:"Бронзовый волонтер"}
+        ];
+
+        function renderVolunteerRating() {
+            const table = document.getElementById('volunteerRatingTable');
+            table.innerHTML = '';
+            
+            volunteerData.sort((a,b) => b.hours - a.hours).forEach((vol, idx) => {
+                const progress = Math.min(100, Math.round((vol.hours / vol.target) * 100));
+                let medal = '';
+                if(idx === 0) medal = '🥇';
+                else if(idx === 1) medal = '🥈';
+                else if(idx === 2) medal = '🥉';
+                
+                table.innerHTML += `
+                    <tr style="border-bottom:1px solid #555;">
+                        <td style="text-align:center; padding:15px;">${idx+1}</td>
+                        <td style="padding:15px;">
+                            <img src="${vol.avatar}" style="width:50px; height:50px; border-radius:50%; object-fit:cover; margin-right:15px; vertical-align:middle; border:2px solid #4da8ff;">
+                            ${vol.name} ${medal}
+                        </td>
+                        <td style="text-align:center; padding:15px;">${vol.hours}</td>
+                        <td style="padding:15px;">
+                            <div style="height:20px; background:#333; border-radius:10px; overflow:hidden;">
+                                <div style="height:100%; width:${progress}%; background:linear-gradient(90deg, #4da8ff, #6bbdff); border-radius:10px;"></div>
+                            </div>
+                        </td>
+                        <td style="text-align:center; padding:15px; ${vol.status.includes('Золотой')?'color:gold':vol.status.includes('Серебряный')?'color:silver':vol.status.includes('Бронзовый')?'color:#cd7f32':''}">
+                            ${vol.status}
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // 8. Викторина
+        const quizAnimals = [
+            {id:1, name:"Барсик", image:"cat1.jpeg", options:["Барсик","Шарик","Мурзик"], fact:"Был найден в подвале, обожает играть с мячиком"},
+            {id:2, name:"Шарик", image:"dog1.jpg", options:["Шарик","Тузик","Бобик"], fact:"Умеет открывать двери лапой, любит долгие прогулки"}
+        ];
+        
+        let currentQuiz = null;
+        let quizScore = {correct:0, wrong:0};
+        let usedAnimals = [];
+        
+        function startQuiz() {
+            if(usedAnimals.length === quizAnimals.length) usedAnimals = [];
+            
+            const available = quizAnimals.filter(a => !usedAnimals.includes(a.id));
+            currentQuiz = available[Math.floor(Math.random() * available.length)];
+            usedAnimals.push(currentQuiz.id);
+            
+            document.getElementById('quizAnimalImg').src = currentQuiz.image;
+            document.getElementById('quizQuestion').textContent = "Кто это? Выберите правильный ответ:";
+            document.getElementById('animalFact').style.display = "none";
+            document.getElementById('nextQuizBtn').style.display = "none";
+            
+            const optionsContainer = document.getElementById('quizOptionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            currentQuiz.options.sort(() => Math.random() - 0.5).forEach(opt => {
+                const btn = document.createElement('button');
+                btn.textContent = opt;
+                btn.style.cssText = "background:#4e4e4e; color:white; border:none; padding:12px; border-radius:30px; cursor:pointer; transition:all 0.3s;";
+                btn.onclick = () => checkQuizAnswer(opt);
+                optionsContainer.appendChild(btn);
+            });
+        }
+        
+        function checkQuizAnswer(answer) {
+            const options = document.getElementById('quizOptionsContainer').children;
+            
+            for(let i = 0; i < options.length; i++) {
+                options[i].disabled = true;
+                if(options[i].textContent === currentQuiz.name) {
+                    options[i].style.background = "#4CAF50";
+                } else if(options[i].textContent === answer && answer !== currentQuiz.name) {
+                    options[i].style.background = "#f44336";
+                }
+            }
+            
+            if(answer === currentQuiz.name) {
+                quizScore.correct++;
+                document.getElementById('quizQuestion').textContent = `Правильно! Это ${currentQuiz.name}!`;
+            } else {
+                quizScore.wrong++;
+                document.getElementById('quizQuestion').textContent = `Ошибка! Это ${currentQuiz.name}`;
+            }
+            
+            document.getElementById('animalFact').textContent = `Интересный факт: ${currentQuiz.fact}`;
+            document.getElementById('animalFact').style.display = "block";
+            document.getElementById('nextQuizBtn').style.display = "inline-block";
+            document.getElementById('quizCorrect').textContent = quizScore.correct;
+            document.getElementById('quizWrong').textContent = quizScore.wrong;
+        }
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            renderVolunteerRating();
+            startQuiz();
+            document.getElementById('nextQuizBtn').addEventListener('click', startQuiz);
+        });
+    </script>
+</body>
+</html> 

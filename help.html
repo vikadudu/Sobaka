@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Как я могу помочь?</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #333;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Стили для кнопки "Вернуться на главную" */
+    .home-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: linear-gradient(135deg, #4CAF50, #45a049);
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 30px;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      font-weight: bold;
+      font-size: 1.1em;
+      border: none;
+      cursor: pointer;
+    }
+
+    .home-button:hover {
+      background: linear-gradient(135deg, #45a049, #3e8e41);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.8em;
+      padding: 20px 40px;
+      border: 4px double #0e0802;
+      border-radius: 15px;
+      background: linear-gradient(145deg, #f3efec, #e8e4e0);
+      display: block;
+      margin: 30px auto;
+      width: fit-content;
+      color: #222;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        to bottom right,
+        rgba(255,255,255,0.3) 0%,
+        rgba(255,255,255,0) 60%
+      );
+      transform: rotate(30deg);
+      transition: all 0.7s ease;
+    }
+
+    h1:hover {
+      transform: scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    h1:hover::before {
+      left: 100%;
+    }
+    
+    hr {
+      border: none;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #555, transparent);
+      margin: 0 50px 30px;
+      opacity: 0.8;
+    }
+    
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 30px;
+      flex: 1;
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .block {
+      width: 45%;
+      min-width: 300px;
+      margin-bottom: 30px;
+      text-align: center;
+      transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      perspective: 1000px;
+      position: relative;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 0.6s forwards;
+    }
+
+    .block:nth-child(1) { animation-delay: 0.1s; }
+    .block:nth-child(2) { animation-delay: 0.3s; }
+    .block:nth-child(3) { animation-delay: 0.5s; }
+    .block:nth-child(4) { animation-delay: 0.7s; }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .image-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 15px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      transition: all 0.5s ease;
+      height: 350px;
+    }
+
+    .block:hover {
+      transform: translateY(-10px);
+    }
+
+    .block:hover .image-wrapper {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .block img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: all 0.5s ease;
+      transform-origin: center center;
+    }
+
+    .block:hover img {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+
+    .image-wrapper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .block:hover .image-wrapper::after {
+      opacity: 1;
+    }
+
+    .block p {
+      font-size: 1.6em;
+      font-weight: bold;
+      color: rgb(11, 11, 11);
+      border: 2px solid black;
+      display: inline-block;
+      padding: 12px 25px;
+      margin-top: 20px;
+      background: linear-gradient(135deg, yellow, #ffeb3b);
+      border-radius: 30px;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .block p::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,0.3),
+        transparent
+      );
+      transition: all 0.6s ease;
+    }
+
+    .block:hover p {
+      transform: scale(1.05);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .block:hover p::before {
+      left: 100%;
+    }
+    
+    /* Стили для футера */
+    footer {
+      background: linear-gradient(to bottom, #222, #1a1a1a);
+      padding: 30px 20px;
+      text-align: center;
+      margin-top: 60px;
+      border-top: 1px solid #444;
+      width: 100%;
+      position: relative;
+    }
+    
+    .contact-info {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      color: #ddd;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .contact-item {
+      margin: 15px;
+      flex: 1;
+      min-width: 200px;
+      transition: all 0.3s ease;
+    }
+
+    .contact-item:hover {
+      transform: translateY(-3px);
+      text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+    
+    footer a {
+      color: #4da6ff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    footer a:hover {
+      color: #2d8bff;
+      text-shadow: 0 0 8px rgba(45, 139, 255, 0.4);
+    }
+
+    footer a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #2d8bff;
+      transition: width 0.3s ease;
+    }
+
+    footer a:hover::after {
+      width: 100%;
+    }
+    
+    .copyright {
+      margin-top: 25px;
+      color: #aaa;
+      font-size: 0.95em;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Кнопка "Вернуться на главную" -->
+  <a href="index.html" class="home-button">На главную</a>
+
+  <h1>Как я могу помочь?</h1>
+  <hr>
+
+  <div class="container">
+    <div class="block">
+      <div class="image-wrapper">
+        <img src="image1.jpg" alt="Помощь в распространении информации">
+      </div>
+      <p>Помочь рассказать о хвостиках онлайн</p>
+    </div>
+
+    <div class="block">
+      <div class="image-wrapper">
+        <img src="image2.jpg" alt="Финансовая помощь">
+      </div>
+      <p>Пожертвовать</p>
+    </div>
+
+    <div class="block">
+      <div class="image-wrapper">
+        <img src="image3.jpg" alt="Опекунство над животным">
+      </div>
+      <p>Стать опекуном</p>
+    </div>
+
+    <div class="block">
+      <div class="image-wrapper">
+        <img src="image4.jpg" alt="Волонтерство в приюте">
+      </div>
+      <p>Помочь в приюте</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="contact-info">
+        <div class="contact-item">
+            <strong>Телефон:</strong> +7 (123) 456-78-90
+        </div>
+        <div class="contact-item">
+            <strong>Email:</strong> <a href="mailto:info@sobaka-help.ru">info@sobaka-help.ru</a>
+        </div>
+        <div class="contact-item">
+            <strong>Адрес:</strong> г. Москва, ул. Добрая, д. 15
+        </div>
+    </div>
+    <p class="copyright">© 2025 Центр помощи бездомным животным "Собака"</p>
+  </footer>
+
+</body>
+</html>
